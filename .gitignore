@@ -11,6 +11,7 @@
 */__pycache__/
 
 PharmacySchedule/.DS_Store
+PharmacySchedule/tests
 
 ### Django ###
 *.log
