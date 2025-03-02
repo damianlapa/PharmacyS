@@ -1,0 +1,10 @@
+{% extends '__base__.html' %}
+{% block tab_title %}Edit {{ person }}{% endblock %}
+{% block title %}Edit {{ person }}{% endblock %}
+{% block content %}
+  <form name='person-edit' method="post">
+        {% csrf_token %}
+      {{ form.as_p }}
+      <input type="Submit" value="Save">
+  </form>
+{% endblock %}

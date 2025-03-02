@@ -1,0 +1,90 @@
+{% extends '__base__.html' %}
+{% block title_tab %}Schedule{% endblock %}
+{% block title %}Schedule {{ schedule }}{% endblock %}
+{% block content %}
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  text-align: center;
+}
+th {
+  background-color: lightgrey; /* Kolor tła dla wiersza nagłówkowego (data i weekday) */
+  color: black; /* Kolor tekstu dla wiersza nagłówkowego (data i weekday) */
+  height: 45px; /* Zwiększ wysokość wiersza */
+}
+
+th.date-column {
+  background-color: lightgray !important; /* Kolor tła dla kolumny Date */
+}
+
+.container {
+  width: 100%;
+}
+
+.schedule-container {
+  margin: 0 auto;
+}
+
+.fleft {
+    float: left;
+}
+</style>
+<div class="container">
+<div class="schedule-container fleft" style="width: 85%">
+<form method="post" id="schd-form">
+{% csrf_token %}
+<table style="width: 90%">
+    <tr>
+        <th class="date-column">Date</th>
+        <th>Weekday</th>
+        {% for s in shifts %}
+            <th colspan="{{ s.capacity }}">{{ s.start_hour|date:"G:i" }}-{{ s.end_hour|date:"G:i" }}</th>
+        {% endfor %}
+    </tr>
+
+    {% for data in shifts_data %}
+    <tr {% if data.1 == 'sb' %}style="background: Lightgray;"{% endif %}>
+        {% for detail_data in data %}
+            {% if forloop.counter < 3 %}
+                <td>{{ detail_data }}</td>
+            {% else %}
+                <td>
+                    <select name="slot_id{{ detail_data.id }}" {% if detail_data.person %}style="color: darkgreen"{% else %}style="background: lightgrey"{% endif %}>
+                        <option selected >---</option>
+                        {% for p in persons %}
+                            {% if p == detail_data.person %}
+                                <option selected value="{{ p.id }}" style="background: red">{{ p|truncatechars:15 }}</option>
+                            {% else %}
+                                <option value="{{ p.id }}" style="color: red">{{ p|truncatechars:15 }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </td>
+            {% endif %}
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+    <input type="submit" value="Zapisz">
+</form>
+</div>
+<div class="fleft" style="width: 10%">
+    <h2>Edycja</h2>
+    <hr>
+    <input type="submit" form="schd-form" value="SAVE SCHEDULE" style="background: green; color: white;">
+    <hr>
+    <a href="{% url 'shift-add' %}?schedule_id={{schedule.id}}">
+        <button>Dodaj zmianę</button>
+    </a>
+    {% for s in shifts %}
+    <p>{{ s.start_hour|date:"G:i" }} - {{ s.end_hour|date:"G:i" }} <a href="{% url 'shift-delete' shift_id=s.id %}"><button>DELETE</button></a></p>
+    {% endfor %}
+    <hr>
+    <hr>
+    <a href="{% url 'schedule-delete' schedule_id=schedule_id %}"><button style="background: red; color: white;">DELETE SCHEDULE</button></a>
+    <hr>
+</div>
+<div style="clear: both;"></div>
+</div>
+{% endblock %}

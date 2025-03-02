@@ -1,0 +1,8 @@
+{% extends '__base__.html' %}
+{% block tab_title %}Harmonogram Apteka{% endblock %}
+{% block title %}Harmonogram Apteka{% endblock %}
+{% block content %}
+{% if request.user.is_authenticated %}
+Hello {{ user }}
+{% endif %}
+{% endblock %}

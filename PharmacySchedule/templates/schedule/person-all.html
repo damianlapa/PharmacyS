@@ -1,0 +1,31 @@
+{% extends '__base__.html' %}
+{% block tab_title %}All Persons{% endblock %}
+{% block title %}All Persons{% endblock %}
+{% block content %}
+
+<div style="float: left; padding: 5px; margin: 5px;">
+    <h2>Active Persons</h2>
+    <ol>
+    {% for p in persons %}
+    {% if p.user %}
+        <li>{{ p }} <a href="{% url 'user-delete' user_id=p.user.id %}"><button>DELETE</button></a></li>
+    {% endif %}
+    {% endfor %}
+    </ol>
+</div>
+<div style="float: left; padding: 5px; margin: 5px;">
+    <h2>Inactive Persons</h2>
+    <ol>
+    {% for p in persons %}
+    {% if not p.user %}
+        <li>{{ p }} <a href="{% url 'person-edit' person_id=p.id %}"><button>EDIT</button></a></li>
+    {% endif %}
+    {% endfor %}
+    </ol>
+</div>
+<div style="clear: both;"></div>
+<a href="{% url 'person-add' %}">
+    <button>Add</button>
+</a>
+
+{% endblock %}

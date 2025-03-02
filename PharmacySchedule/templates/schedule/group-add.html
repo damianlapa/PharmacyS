@@ -1,0 +1,10 @@
+{% extends '__base__.html' %}
+{% block tab_title %}Add Schedule{% endblock %}
+{% block title %}Add Schedule{% endblock %}
+{% block content %}
+  <form name='schedule-add' method="post">
+        {% csrf_token %}
+      {{ form.as_p }}
+      <input type="Submit" value="Add">
+  </form>
+{% endblock %}

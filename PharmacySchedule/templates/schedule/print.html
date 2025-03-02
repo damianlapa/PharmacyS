@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta http-equiv="Content-Language" content="pl" >
+    <meta charset="UTF-8" >
+    <title>
+        {{ schedule }}
+    </title>
+
+    <style type="text/css">
+    table {
+  border: 1px solid black;
+  border-collapse: collapse;
+  width: 95%; /* Szerokość całej tabeli */
+}
+
+th, td {
+  border: 1.5px solid black;
+  border-collapse: collapse;
+  text-align: center;
+  padding: 1px; /* Dodatkowy padding dla czytelności */
+}
+
+th {
+  background-color: lightgrey; /* Kolor tła dla wiersza nagłówkowego (data i weekday) */
+  color: black; /* Kolor tekstu dla wiersza nagłówkowego (data i weekday) */
+  height: 45px; /* Zwiększ wysokość wiersza */
+}
+
+/* Ustawienia szerokości poszczególnych kolumn */
+th.date-column {
+  width: 4%; /* Szerokość kolumny Date */
+  background-color: lightgrey; /* Kolor tła dla kolumny Date */
+}
+
+th.weekday-column {
+  width: 5%; /* Szerokość kolumny Weekday */
+  background-color: lightgrey; /* Kolor tła dla kolumny Weekday */
+}
+
+th.shift-column {
+  width: 2%; /* Szerokość kolumny Shift */
+}
+
+th.slot-column {
+  width: 1%; /* Szerokość kolumny Slot */
+}
+
+        @page {
+        size: a4 landscape;
+        @frame content_frame {          /* Content Frame */
+            left: 50pt; width: 750pt; top: 10pt; height: 777pt;
+        }
+        @frame footer_frame {           /* Another static Frame */
+            -pdf-frame-content: footer_content;
+            left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+        }
+    }
+
+        body {
+             font-family: "Roboto", sans-serif;
+             page-break-inside:auto;
+        }
+
+        td {
+            padding: 1px;
+            text-align: center;
+        }
+
+        h5 {
+            page-break-before:always;
+        }
+    </style>
+
+</head>
+<body>
+<h1>{{ schedule }}</h1>
+<table>
+    <tr>
+        <th class="date-column">Date</th>
+        <th class="weekday-column">Weekday</th>
+        {% for s in shifts %}
+            <th class="shift-column" colspan="{{ s.capacity }}">{{ s.start_hour|date:"G:i" }}-{{ s.end_hour|date:"G:i" }}</th>
+        {% endfor %}
+    </tr>
+    {% for d in data %}
+    <tr>
+        {% for dd in d %}
+            <td class="slot-column" style="{% if forloop.first or d.1 == 'sb' %}background: lightgray;{% endif %}{% if dd.user == request.user %}color: red;{% endif %}" >{{ dd }}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

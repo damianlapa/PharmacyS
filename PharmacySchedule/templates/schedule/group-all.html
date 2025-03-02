@@ -1,0 +1,15 @@
+{% extends '__base__.html' %}
+{% block tab_title %}All Groups{% endblock %}
+{% block title %}All Groups{% endblock %}
+
+{% block content %}
+
+<a href="{% url 'group-add' %}">
+    <button>Add</button>
+</a>
+
+{% for g in groups %}
+<p>{{ g }}</p>
+{% endfor %}
+
+{% endblock %}

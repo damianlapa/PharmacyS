@@ -1,0 +1,13 @@
+{% extends '__base__.html' %}
+{% block tab_title %}Add Person{% endblock %}
+{% block title %}Add Person{% endblock %}
+{% block content %}
+{% if errors %}
+<div style="color: red">{{ errors }}</div>
+{% endif %}
+<form name='person-add' method="post">
+    {% csrf_token %}
+  {{ form.as_p }}
+  <input type="Submit" value="Add">
+</form>
+{% endblock %}

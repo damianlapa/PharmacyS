@@ -1,0 +1,18 @@
+{% extends '__base__.html' %}
+
+{% block content %}
+{% if request.user.is_superuser %}
+<a href="{% url 'schedule-add' %}">
+    <button>
+        Add Schedule
+    </button>
+</a>
+{% endif %}
+{% for s in schedules %}
+<a href="{% url 'schedule-detail' schedule_id=s.id %}"><p>{{ s }}</p></a>
+{% if request.user.is_superuser %}
+<a href="{% url 'schedule-checkout' schedule_id=s.id %}">sprawdź</a>
+<a href="{% url 'schedule-edit' schedule_id=s.id %}">edytuj</a>
+{% endif %}
+{% endfor %}
+{% endblock %}

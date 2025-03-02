@@ -1,0 +1,10 @@
+{% extends '__base__.html' %}
+{% block tab_title %}Add Shift{% endblock %}
+{% block title %}Add Shift{% endblock %}
+{% block content %}
+  <form name='shift-add' method="post">
+        {% csrf_token %}
+      {{ form.as_p }}
+      <input type="Submit" value="Add">
+  </form>
+{% endblock %}
